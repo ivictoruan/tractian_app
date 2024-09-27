@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tractian_app/utils/app_assets.dart';
@@ -52,7 +54,9 @@ class _MenuScreenState extends State<MenuScreen> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        log('deve ir para tela de assets da companhia.');
+                      },
                       child: Row(
                         children: [
                           const SizedBox(width: 32),
@@ -62,11 +66,11 @@ class _MenuScreenState extends State<MenuScreen> {
                           ),
                           const SizedBox(width: 16),
                           Text(
-                            company.name,
+                            '${company.name} Unit',
                             style: const TextStyle(
                               fontSize: 18,
                               color: AppColors.white,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],
