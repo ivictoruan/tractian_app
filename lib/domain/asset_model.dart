@@ -5,7 +5,7 @@ class AssetModel {
   final String name;
   final String? locationId; // Id de referência do local
   List<AssetModel>? subAssets; // Ativos menores, se aplicável
-  List<ComponentModel>? components; // Componentes associados ao ativo
+  List<ComponentModel>? components;
 
   AssetModel({
     required this.id,
