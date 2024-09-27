@@ -13,12 +13,19 @@ dependencies:
 
 
   cupertino_icons: ^1.0.8
+  dio: ^5.7.0
+  http: ^1.2.2
+  connectivity_plus: ^6.0.5
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^4.0.0
+  mockito: ^5.4.4
+  build_runner: ^2.4.12
+
 
 
 flutter:
@@ -30,3 +37,4 @@ flutter:
     - assets/IoCubeOutline.png
     - assets/Codepen.png
     - assets/logoTractian.png
+    - assets/asset.png
