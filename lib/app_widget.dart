@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'presenter/menu_screen/menu_screen.dart';
+import 'presenter/screens/menu_screen/menu_screen.dart';
+import 'presenter/screens/menu_screen/menu_screen_provider.dart';
 import 'utils/app_theme.dart';
 
 class AppWidget extends StatelessWidget {
@@ -11,6 +12,8 @@ class AppWidget extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: AppTheme.theme,
-        home: const MenuScreen(),
+        home: const MenuScreenProvider(
+          child: MenuScreen(),
+        ),
       );
 }
