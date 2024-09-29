@@ -1,10 +1,12 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tractian_app/presenter/screens/assets_screen/assset_screen_state.dart';
+import 'package:tractian_app/services/api_service.dart';
+import 'package:tractian_app/services/connectivity_service.dart';
 import 'package:tractian_app/utils/app_assets.dart';
 import 'package:tractian_app/utils/app_colors.dart';
 
+import '../assets_screen/assets_screen.dart';
 import 'menu_screen_state.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -55,7 +57,21 @@ class _MenuScreenState extends State<MenuScreen> {
                     ),
                     child: InkWell(
                       onTap: () {
-                        log('deve ir para tela de assets da companhia.');
+                        // TODO: create an function to componentize this function
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ChangeNotifierProvider.value(
+                              value: AssetScreenState(
+                                apiService: context.read<ApiService>(),
+                                connectivityService:
+                                    context.read<ConnectivityService>(),
+                              ),
+                              child: AssetsScreen(
+                                companyId: company.id,
+                              ),
+                            ),
+                          ),
+                        );
                       },
                       child: Row(
                         children: [
