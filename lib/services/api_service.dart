@@ -1,16 +1,18 @@
-import 'dart:developer';
+import 'dart:developer' show log;
 
 import 'package:dio/dio.dart';
 
+import '../domain/asset_model.dart';
 import '../domain/company_model.dart';
+import '../domain/location_model.dart';
 
 abstract class ApiService {
   // QUESTION: returns must be null?;
   Future<List<CompanyModel>> fetchCompanies();
 
-  // Future<List<AssetModel>>? fetchAssets();
+  Future<List<AssetModel>>? fetchAssets({required String companyId});
 
-  // Future<List<LocationModel>>? fetchLocations();
+  Future<List<LocationModel>>? fetchLocations({required String companyId});
 }
 
 class DioApiServiceImpl implements ApiService {
@@ -48,6 +50,60 @@ class DioApiServiceImpl implements ApiService {
 
       // Lida com exceções como timeout, erros de rede etc.
       throw Exception('Error fetching companies: $e');
+    }
+  }
+
+  @override
+  Future<List<AssetModel>> fetchAssets({required String companyId}) async {
+    final String assetsUrl = '/companies/$companyId/assets';
+
+    try {
+      final Response response = await dio.get(assetsUrl);
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data;
+
+        List<AssetModel> assets = data
+            .map<AssetModel>(
+              (json) => AssetModel.fromJson(json),
+            )
+            .toList();
+
+        return assets;
+      } else {
+        log('Error response: ${response.data}');
+        throw Exception('Failed to load assets');
+      }
+    } catch (e) {
+      log('fetchAssets Error: $e');
+      throw Exception('Error fetching assets: $e');
+    }
+  }
+
+  @override
+  Future<List<LocationModel>> fetchLocations(
+      {required String companyId}) async {
+    final String locationsUrl = '/companies/$companyId/locations';
+    try {
+      final Response response = await dio.get(locationsUrl);
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data;
+
+        List<LocationModel> locations = data
+            .map<LocationModel>(
+              (json) => LocationModel.fromJson(json),
+            )
+            .toList();
+
+        return locations;
+      } else {
+        log('Error response: ${response.data}');
+        throw Exception('Failed to load locations');
+      }
+    } catch (e) {
+      log('fetchLocations Error: $e');
+      throw Exception('Error fetching locations: $e');
     }
   }
 }
