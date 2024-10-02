@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tractian_app/domain/company_model.dart';
 import 'package:tractian_app/presenter/screens/assets_screen/assset_screen_state.dart';
 import 'package:tractian_app/services/api_service.dart';
 import 'package:tractian_app/services/connectivity_service.dart';
@@ -58,20 +59,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     child: InkWell(
                       onTap: () {
                         // TODO: create an function to componentize this function
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ChangeNotifierProvider.value(
-                              value: AssetScreenState(
-                                apiService: context.read<ApiService>(),
-                                connectivityService:
-                                    context.read<ConnectivityService>(),
-                              ),
-                              child: AssetsScreen(
-                                companyId: company.id,
-                              ),
-                            ),
-                          ),
-                        );
+                        goToAssetScreen(context: context, company: company);
                       },
                       child: Row(
                         children: [
@@ -99,6 +87,23 @@ class _MenuScreenState extends State<MenuScreen> {
           ),
         MenuScreenStatus.error => buildWhenWithError(),
       },
+    );
+  }
+
+  void goToAssetScreen(
+      {required BuildContext context, required CompanyModel company}) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ChangeNotifierProvider(
+          create: (_) => AssetScreenState(
+            apiService: context.read<ApiService>(),
+            connectivityService: context.read<ConnectivityService>(),
+          ),
+          child: AssetsScreen(
+            companyId: company.id,
+          ),
+        ),
+      ),
     );
   }
 
