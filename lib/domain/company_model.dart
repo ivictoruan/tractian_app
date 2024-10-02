@@ -4,9 +4,7 @@ import 'location_model.dart';
 class CompanyModel {
   final String id;
   final String name;
-  // Locais pertencentes à empresa
   List<LocationModel>? locations;
-  // Ativos diretamente associados à empresa, sem local definido
   List<AssetModel>? assets;
 
   CompanyModel({
