@@ -7,7 +7,7 @@ import '../domain/company_model.dart';
 import '../domain/location_model.dart';
 
 abstract class ApiService {
-  // QUESTION: returns must be null?;
+
   Future<List<CompanyModel>> fetchCompanies();
 
   Future<List<AssetModel>>? fetchAssets({required String companyId});
