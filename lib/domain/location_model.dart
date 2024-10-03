@@ -1,15 +1,19 @@
-import 'asset_model.dart';
-
 class LocationModel {
   final String id;
   final String name;
-  List<LocationModel>? subLocations; // Locais dentro de um local maior
-  List<AssetModel>? assets; // Ativos presentes nesse local
+  final String? parentId;
 
-  LocationModel({
+  const LocationModel({
     required this.id,
     required this.name,
-    this.subLocations,
-    this.assets,
+    this.parentId,
   });
+
+  factory LocationModel.fromJson(Map<String, dynamic> json) {
+    return LocationModel(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      parentId: json['parentId'] as String?,
+    );
+  }
 }

@@ -5,28 +5,37 @@
 /// [vibração ou energia] e têm um status [operacional] ou [alerta]
 library;
 
-// enum Status { operating, alert }
-
-// enum SensorType { vibration, energy }
-
 class ComponentModel {
   final String id;
   final String name;
-  // Id do ativo pai
-  final String? assetId;
-  // Id do local pai (se não estiver associado a um ativo)
+  final String? parentId;
   final String? locationId;
-  // TODO: criar enum status {Operating, Alert}
-  final String status;
-  // TODO: criar enum sensorType {Vibration, Energy}
-  final String sensorType;
+  final String? sensorId;
+  final String? sensorType;
+  final String? status;
+  final String? gatewayId;
 
-  ComponentModel({
+  const ComponentModel({
     required this.id,
     required this.name,
-    this.assetId,
+    this.parentId,
     this.locationId,
-    required this.status,
-    required this.sensorType,
+    this.sensorId,
+    this.sensorType,
+    this.status,
+    this.gatewayId,
   });
+
+  factory ComponentModel.fromJson(Map<String, dynamic> json) {
+    return ComponentModel(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      parentId: json['parentId'] as String?,
+      locationId: json['locationId'] as String?,
+      sensorId: json['sensorId'] as String?,
+      sensorType: json['sensorType'] as String?,
+      status: json['status'] as String?,
+      gatewayId: json['gatewayId'] as String?,
+    );
+  }
 }
