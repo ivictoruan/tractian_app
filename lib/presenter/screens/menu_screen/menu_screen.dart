@@ -57,15 +57,15 @@ class _MenuScreenState extends State<MenuScreen> {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: InkWell(
-                      onTap: () {
-                        // TODO: create an function to componentize this function
-                        goToAssetScreen(context: context, company: company);
-                      },
+                      onTap: () => goToAssetScreen(
+                        context: context,
+                        company: company,
+                      ),
                       child: Row(
                         children: [
                           const SizedBox(width: 32),
                           Image.asset(
-                            AppAssets.asset,
+                            AppAssets.company,
                             width: 24,
                           ),
                           const SizedBox(width: 16),
