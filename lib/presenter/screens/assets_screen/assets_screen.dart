@@ -41,7 +41,10 @@ class _AssetsScreenState extends State<AssetsScreen> {
         appBar: AppBar(
           backgroundColor: AppColors.darkBlue,
           title: const Text('Assets'),
-          leading: const BackButton(color: Colors.white),
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.arrow_back_ios_new),
+          ),
         ),
         body: Consumer<AssetScreenState>(
           builder: (context, assetState, child) {
