@@ -1,17 +1,23 @@
-import 'component_model.dart';
-
 class AssetModel {
   final String id;
   final String name;
-  final String? locationId; // Id de referência do local
-  List<AssetModel>? subAssets; // Ativos menores, se aplicável
-  List<ComponentModel>? components;
+  final String? parentId;
+  final String? locationId;
+  final String? sensorType;
 
-  AssetModel({
+  const AssetModel({
     required this.id,
     required this.name,
+    this.parentId,
     this.locationId,
-    this.subAssets,
-    this.components,
+    this.sensorType,
   });
+
+  factory AssetModel.fromJson(Map<String, dynamic> json) => AssetModel(
+        id: json['id'] as String,
+        name: json['name'] as String,
+        parentId: json['parentId'] as String?,
+        locationId: json['locationId'] as String?,
+        sensorType: json['sensorType'] as String?,
+      );
 }
