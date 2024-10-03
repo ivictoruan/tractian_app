@@ -1,11 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tractian_app/utils/app_assets.dart';
 import '../../../domain/asset_model.dart';
 import '../../../domain/location_model.dart';
+import '../../../utils/app_assets.dart';
+import '../../../utils/app_colors.dart';
 import 'assset_screen_state.dart';
+import 'widgets/expanded_tile_widget.dart';
 
 class AssetsScreen extends StatefulWidget {
   final String companyId;
@@ -17,168 +17,178 @@ class AssetsScreen extends StatefulWidget {
 }
 
 class _AssetsScreenState extends State<AssetsScreen> {
-  void initScreen() {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) async {
-        final assetState = context.read<AssetScreenState>();
-        if (mounted) {
-          await assetState.fetchAssets(widget.companyId);
-        }
-
-      },
-    );
-  }
+  late final AssetScreenState assetScreenState;
+  List<LocationModel> locations = [];
+  List<AssetModel> assets = [];
 
   @override
   void initState() {
     super.initState();
-    initScreen();
+    assetScreenState = context.read<AssetScreenState>();
+    WidgetsBinding.instance.addPostFrameCallback((_) async => _initScreen());
+  }
+
+  Future<void> _initScreen() async {
+    await assetScreenState.fetchAssets(widget.companyId);
+
+    await assetScreenState.fetchLocations(widget.companyId);
+    locations = assetScreenState.locations;
+    assets = assetScreenState.assets;
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: _buildBody(context),
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar() => AppBar(
-        title: const Text('Assets'),
-        leading: IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(
-              Icons.arrow_back_ios,
-            )),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.darkBlue,
+          title: const Text('Assets'),
+          leading: const BackButton(color: Colors.white),
+        ),
+        body: Consumer<AssetScreenState>(
+          builder: (context, assetState, child) {
+            switch (assetState.status) {
+              case AssetScreenStatus.loading:
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              case AssetScreenStatus.error:
+                return const Center(
+                  child: Text('An error occurred. Please try again.'),
+                );
+              case AssetScreenStatus.loaded:
+                return _buildBody(
+                  assets: assetState.assets,
+                  locations: assetState.locations,
+                );
+            }
+          },
+        ),
       );
 
-  Widget _buildBody(BuildContext context) {
-    return Consumer<AssetScreenState>(
-      builder: (context, assetState, child) {
-        switch (assetState.status) {
-          case AssetScreenStatus.loading:
-            return const Center(child: CircularProgressIndicator());
-          case AssetScreenStatus.error:
-            return const Center(
-                child: Text('An error occurred. Please try again.'));
-          case AssetScreenStatus.loaded:
-            return _buildTreeView(assetState.locations);
-        }
-      },
-    );
-  }
-
-  Widget _buildTreeView(List<LocationModel> locations) {
-    return ListView.builder(
-      itemCount: locations.length,
-      itemBuilder: (context, index) {
-        final location = locations[index];
-        return _buildLocationTile(location);
-      },
-    );
-  }
-
-  Widget _buildLocationTile(LocationModel location) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Container(
-              width: 22,
-              height: 22,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(AppAssets.location),
-                ),
+  Widget _buildBody({
+    required List<AssetModel> assets,
+    required List<LocationModel> locations,
+  }) =>
+      Column(
+        children: [
+          Expanded(
+            child: ListView(
+              children: _buildTreeNodes(
+                locations,
+                assets,
+                null,
               ),
             ),
-            const SizedBox(width: 4),
-            Text(location.name, style: const TextStyle(fontSize: 16)),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Column(
-            children: [
-              if (location.subLocations != null)
-                ...location.subLocations!.map(
-                  (subLoc) => _buildLocationTile(subLoc),
-                ),
-              if (location.assets != null)
-                ...location.assets!.map(
-                  (asset) => _buildAssetTile(asset),
-                ),
-            ],
           ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
 
-  Widget _buildAssetTile(AssetModel asset) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Container(
-              width: 22,
-              height: 22,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                    asset.subAssets?.isEmpty ?? false
-                        ? AppAssets.cube
-                        : AppAssets.codePen,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
-            Text(asset.name, style: const TextStyle(fontSize: 14)),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Column(
-            children: [
-              if (asset.subAssets != null)
-                ...asset.subAssets!
-                    .map((subAsset) => _buildAssetTile(subAsset)),
-              if (asset.components != null)
-                ...asset.components!.map(
-                  (component) => ListTile(
-                    leading: Icon(
-                      Icons.circle,
-                      color: _getComponentStatusColor(component.status),
-                      size: 12,
-                    ),
-                    title: Text(component.name),
-                    subtitle: Text('Sensor Type: ${component.sensorType}'),
-                    trailing: Icon(
-                      Icons.bolt,
-                      color: component.sensorType == 'Energy'
-                          ? Colors.green
-                          : Colors.transparent,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+  List<Widget> _buildTreeNodes(
+      List<LocationModel> locations, List<AssetModel> assets, String? parentId,
+      [int depth = 0]) {
+    List<Widget> nodes = [];
 
-  Color _getComponentStatusColor(String? status) {
-    switch (status) {
-      case 'critical':
-        return Colors.red;
-      case 'normal':
-        return Colors.green;
-      default:
-        return Colors.grey;
+    // Adiciona locais no nível atual
+    for (LocationModel location
+        in locations.where((location) => location.parentId == parentId)) {
+      nodes.add(_buildLocationNode(
+        location: location,
+        allLocations: locations,
+        allAssets: assets,
+        depth: depth,
+      ));
     }
+
+    // Adiciona ativos no nível atual
+    for (AssetModel asset
+        in assets.where((asset) => asset.locationId == parentId)) {
+      // Verifica se é um ativo sem parentId (ativo principal) ou um componente
+      if (asset.parentId == null) {
+        nodes.add(_buildAssetNode(
+          asset: asset,
+          allAssets: assets,
+          depth: depth,
+        ));
+      }
+    }
+
+    return nodes;
+  }
+
+  Widget _buildLocationNode({
+    required LocationModel location,
+    required List<LocationModel> allLocations,
+    required List<AssetModel> allAssets,
+    required int depth,
+  }) =>
+      _buildTreeItem(
+        assetName: AppAssets.location,
+        title: location.name,
+        depth: depth,
+        children: _buildTreeNodes(
+          allLocations,
+          allAssets,
+          location.id,
+          depth + 1,
+        ),
+      );
+
+  Widget _buildAssetNode({
+    required AssetModel asset,
+    required List<AssetModel> allAssets,
+    required int depth,
+  }) {
+    List<Widget> childNodes = allAssets
+        .where((childAsset) => childAsset.parentId == asset.id)
+        .map((childAsset) => _buildAssetNode(
+              asset: childAsset,
+              allAssets: allAssets,
+              depth: depth + 1,
+            ))
+        .toList();
+
+    final bool isSensor = asset.sensorType != null;
+
+    return _buildTreeItem(
+      assetName: isSensor ? AppAssets.sensor : AppAssets.component,
+      title: asset.name,
+      depth: depth,
+      trailing: _getStatusIcon(asset),
+      children: childNodes,
+    );
+  }
+
+  Widget _buildTreeItem({
+    required String assetName,
+    required String title,
+    required int depth,
+    List<Widget>? children,
+    Widget? trailing,
+  }) =>
+      ExpansionTileWidget(
+        assetName: assetName,
+        depth: depth,
+        title: title,
+        trailing: trailing,
+        children: children,
+      );
+
+  Widget? _getStatusIcon(AssetModel asset) {
+    if (asset.sensorType == 'energy') {
+      return const Icon(
+        Icons.bolt,
+        color: Colors.green,
+        size: 16,
+      );
+    } else if (asset.sensorType == 'vibration') {
+      return Container(
+        width: 8,
+        height: 8,
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.red,
+        ),
+      );
+    }
+    return null;
   }
 }
