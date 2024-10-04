@@ -1,3 +1,5 @@
+![LinkedIn Background](https://media.licdn.com/dms/image/v2/D4D16AQGGVLjsJPOezw/profile-displaybackgroundimage-shrink_350_1400/profile-displaybackgroundimage-shrink_350_1400/0/1719346693950?e=1733356800&v=beta&t=uF6zyZ0Znsnfg9e6Jw5ZP-rq8ao5BIDyAzmDGuqyMdM)
+
 # 🚀 Mobile Software Engineer - Tractian Challenge
 
 ## 📌 Summary
