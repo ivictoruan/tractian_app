@@ -88,7 +88,8 @@ The asset hierarchy is represented as follows:
   - Implementation of an Isolate was lacking for better performance with large amounts of data
 
 ## 🎥 Demonstration
-[https://youtu.be/vrGu-ejrLLw]
+[![Watch the demonstration video](https://img.youtube.com/vi/vrGu-ejrLLw/hqdefault.jpg)](https://youtu.be/vrGu-ejrLLw)
+
 
 The video above demonstrates:
 1. App opening
