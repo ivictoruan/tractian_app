@@ -1,24 +1,24 @@
-# 🚀 Engenheiro de Software Móvel - Desafio Tractian
+# 🚀 Mobile Software Engineer - Tractian Challenge
 
-## 📌 Sumário
-1. Contexto
-2. Desafio
-3. Estrutura da Árvore
-4. Recursos Implementados
-5. Dados Técnicos
-6. Desenvolvimento
-7. Demonstração
-8. Melhorias Futuras
-9. Conclusão
+## 📌 Summary
+1. Context
+2. Challenge
+3. Tree Structure
+4. Implemented Features
+5. Technical Data
+6. Development
+7. Demonstration
+8. Future Improvements
+9. Conclusion
 
-## 📚 Contexto
-Na indústria moderna, os ativos desempenham um papel crucial, abrangendo desde equipamentos de fabricação até sistemas de geração de energia. A gestão eficiente desses ativos é fundamental para manter a produtividade e reduzir custos operacionais. Uma visualização clara da hierarquia de ativos, através de uma estrutura de árvore, facilita significativamente este processo de gestão.
+## 📚 Context
+In the modern industry, assets play a crucial role, ranging from manufacturing equipment to energy generation systems. Efficient management of these assets is essential for maintaining productivity and reducing operational costs. A clear visualization of the asset hierarchy, through a tree structure, significantly facilitates this management process.
 
-## 🎯 Desafio
-O objetivo principal deste projeto é desenvolver um aplicativo móvel que apresente uma visualização em árvore dos ativos empresariais. Esta estrutura hierárquica é composta por três elementos principais: componentes, ativos e locais.
+## 🎯 Challenge
+The main objective of this project is to develop a mobile application that presents a tree visualization of corporate assets. This hierarchical structure is composed of three main elements: components, assets, and locations.
 
-## 🌳 Estrutura da Árvore
-A hierarquia de ativos é representada da seguinte forma:
+## 🌳 Tree Structure
+The asset hierarchy is represented as follows:
 
 - Raiz
   - Local A
@@ -36,21 +36,21 @@ A hierarquia de ativos é representada da seguinte forma:
       - Componente D1
   - Componente X
 
-## 🛠️ Recursos Implementados
+## 🛠️ Implemented Features
 
-### 1. Página Inicial
-- Interface intuitiva para navegação entre empresas
-- Acesso rápido aos ativos de cada empresa
-- Tratamento de UI quando estiver sem internet ou com erro no carregamento
+### 1. Home Page
+- Intuitive interface for navigating between companies
+- Quick access to each company's assets
+- UI handling for offline situations or loading errors
 
-### 2. Página de Ativos
-- [OK] Visualização da Árvore: Representação dinâmica e interativa da hierarquia de ativos
-- [OK] Tratamento de UI quando estiver sem internet ou com erro no carregamento
-- [PENDENTE] Sistema de Filtros Avançado:
+### 2. Assets Page
+- [OK] Tree Visualization: Dynamic and interactive representation of the asset hierarchy
+- [OK] UI handling for offline situations or loading errors
+- [PENDING] Advanced Filtering System:
 
-## 📊 Dados Técnicos
+## 📊 Technical Data
 
-### Estrutura de Dados dos Locais
+### Data Structure for Locations
 
 {
   "id": "65674204664c41001e91ecb4",
@@ -69,43 +69,42 @@ A hierarquia de ativos é representada da seguinte forma:
   "gatewayId": "QHI640",
   "locationId": null
 }
+## 💻 Development
 
-## 💻 Desenvolvimento
-
-### Tecnologias Utilizadas
+### Technologies Used
 - Framework: Flutter
-- Gerenciamento de Estado: ChangeNotifier + SetState
-- Injeção de dependência: Provider
-- Consumo de API (DIO): Implementação eficiente para integração de dados em tempo real
-    - Inversão de dependência, fazendo o serviço ser desacoplado
-- UI/UX: Design responsivo e intuitivo, priorizando a experiência do usuário
+- State Management: ChangeNotifier + SetState
+- Dependency Injection: Provider
+- API Consumption (DIO): Efficient implementation for real-time data integration
+    - Dependency inversion, decoupling the service
+- UI/UX: Responsive and intuitive design, prioritizing user experience
 
-### Boas Práticas Implementadas
-- Arquitetura limpa para facilitar manutenção e escalabilidade
-- Testes unitários e de integração para garantir robustez
-  - Serviço de API
-  - Serviço de checar Conectividade
-- Otimização de performance para carregamento rápido de grandes conjuntos de dados
-  - Faltou a implementaçao de um Isolate para uma melhor performance com houverem muitos dados
+### Best Practices Implemented
+- Clean architecture to facilitate maintenance and scalability
+- Unit and integration tests to ensure robustness
+  - API service
+  - Connectivity check service
+- Performance optimization for fast loading of large datasets
+  - Implementation of an Isolate was lacking for better performance with large amounts of data
 
-## 🎥 Demonstração
+## 🎥 Demonstration
 [https://youtu.be/vrGu-ejrLLw]
 
-O vídeo acima demonstra:
-1. Abertura do aplicativo
-2. Navegação entre diferentes empresas
-3. Visualização da árvore de ativos
+The video above demonstrates:
+1. App opening
+2. Navigation between different companies
+3. Asset tree visualization
 
-## 🔮 Melhorias Futuras
-1. Implementação de cache local para melhorar o desempenho offline
-2. Adição de funcionalidades de edição da árvore de ativos
-3. Integração com sistemas de notificação para alertas em tempo real
-4. Expansão das capacidades de análise de dados e geração de relatórios
-5. Desenvolvimento dos filtros com Chips e o buscador
-6. Otimização de performance para carregamento rápido de grandes conjuntos de dados (Isolate)
+## 🔮 Future Improvements
+1. Implementation of local cache to improve offline performance
+2. Addition of asset tree editing functionalities
+3. Integration with notification systems for real-time alerts
+4. Expansion of data analysis and reporting capabilities
+5. Development of filters with chips and a search bar
+6. Performance optimization for fast loading of large datasets (Isolate)
 
-## 🏁 Conclusão
-O aplicativo foi desenvolvido com uma abordagem baseada na arquitetura limpa, que assegura uma estrutura organizada e escalável, facilitando a manutenção e a evolução do sistema. A separação , domínio, serviços e UI permite uma inversão de controle eficaz, garantindo que a lógica de negócios permaneça independente da camada de apresentação.
+## 🏁 Conclusion
+The application was developed with a clean architecture approach, ensuring an organized and scalable structure that facilitates maintenance and system evolution. The separation of concerns, domain, services, and UI allows for effective inversion of control, ensuring that business logic remains independent of the presentation layer.
 
 ---
 
