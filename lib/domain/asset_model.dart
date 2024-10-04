@@ -4,6 +4,7 @@ class AssetModel {
   final String? parentId;
   final String? locationId;
   final String? sensorType;
+  final String? status;
 
   const AssetModel({
     required this.id,
@@ -11,6 +12,7 @@ class AssetModel {
     this.parentId,
     this.locationId,
     this.sensorType,
+    this.status,
   });
 
   factory AssetModel.fromJson(Map<String, dynamic> json) => AssetModel(
@@ -19,5 +21,6 @@ class AssetModel {
         parentId: json['parentId'] as String?,
         locationId: json['locationId'] as String?,
         sensorType: json['sensorType'] as String?,
+        status: json['status'] as String?,
       );
 }
